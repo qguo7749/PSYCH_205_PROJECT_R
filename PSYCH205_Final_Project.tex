@@ -1,0 +1,476 @@
+\documentclass{article}\usepackage[]{graphicx}\usepackage[]{xcolor}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage[sc]{mathpazo}
+\renewcommand{\sfdefault}{lmss}
+\renewcommand{\ttdefault}{lmtt}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\topfraction}{0.8}
+\renewcommand{\bottomfraction}{0.8}
+\renewcommand{\floatpagefraction}{0.75}
+
+\makeatother
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+\title{\title{}}
+
+
+
+\maketitle
+The results below are generated from an R script.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(nlme)}
+\hlkwd{library}\hlstd{(lattice)}
+\hlkwd{library}\hlstd{(car)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning: package 'car' was built under R version 4.3.3}}
+
+{\ttfamily\noindent\itshape\color{messagecolor}{\#\# Loading required package: carData}}\begin{alltt}
+\hlstd{data}\hlkwb{<-}\hlkwd{read.csv}\hlstd{(}\hlstr{"ptcp_gnometrans.csv"}\hlstd{)}
+
+
+\hlstd{data_no_g11}\hlkwb{<-}\hlstd{data[data}\hlopt{$}\hlstd{generation} \hlopt{<}\hlnum{11}\hlstd{, ]}
+\hlstd{data_no_g11}\hlkwb{<-}\hlstd{data_no_g11[data_no_g11}\hlopt{$}\hlstd{condition} \hlopt{==}\hlstr{"SSL"}\hlstd{, ]}
+\hlstd{drops} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"network_id"}\hlstd{,}\hlstr{"replication"}\hlstd{,}\hlstr{"cloned"}\hlstd{,}\hlstr{"algorithm"}\hlstd{,}\hlstr{"algorithm_description"}\hlstd{)}
+\hlstd{data_no_g11}\hlkwb{<-}\hlstd{data_no_g11[ ,} \hlopt{!}\hlstd{(}\hlkwd{names}\hlstd{(data_no_g11)} \hlopt{%in%} \hlstd{drops)]}
+\hlstd{data_no_g11}\hlkwb{<-}\hlkwd{na.omit}\hlstd{(data_no_g11)}
+
+\hlstd{n} \hlkwb{<-} \hlkwd{nrow}\hlstd{(data_no_g11)}
+
+\hlkwd{summary}\hlstd{(mod.lm0}\hlkwb{<-}\hlkwd{lm}\hlstd{(p_trans} \hlopt{~} \hlnum{1}\hlstd{,}\hlkwc{data}\hlstd{=data_no_g11))}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = p_trans ~ 1, data = data_no_g11)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.54657 -0.21324  0.05343  0.25343  0.45343 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  0.54657    0.01511   36.16   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.3416 on 510 degrees of freedom
+\end{verbatim}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(mod.lm1}\hlkwb{<-}\hlkwd{lm}\hlstd{(p_trans} \hlopt{~} \hlstd{generation,}\hlkwc{data}\hlstd{=data_no_g11))}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = p_trans ~ generation, data = data_no_g11)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.55686 -0.20856  0.04913  0.25612  0.46111 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  0.558857   0.037921  14.738   <2e-16 ***
+## generation  -0.001996   0.005650  -0.353    0.724    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.3419 on 509 degrees of freedom
+## Multiple R-squared:  0.0002452,	Adjusted R-squared:  -0.001719 
+## F-statistic: 0.1249 on 1 and 509 DF,  p-value: 0.724
+\end{verbatim}
+\begin{alltt}
+\hlkwd{summary}\hlstd{(mod.lm2}\hlkwb{<-}\hlkwd{lm}\hlstd{(p_trans} \hlopt{~} \hlstd{s_demo}\hlopt{+}\hlstd{generation,}\hlkwc{data}\hlstd{=data_no_g11))}
+\end{alltt}
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = p_trans ~ s_demo + generation, data = data_no_g11)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.65909 -0.19107  0.03265  0.23150  0.59797 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  0.430683   0.040626  10.601  < 2e-16 ***
+## s_demo       0.235571   0.033696   6.991 8.62e-12 ***
+## generation  -0.003582   0.005406  -0.663    0.508    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.3269 on 508 degrees of freedom
+## Multiple R-squared:  0.08799,	Adjusted R-squared:  0.0844 
+## F-statistic: 24.51 on 2 and 508 DF,  p-value: 6.917e-11
+\end{verbatim}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(mod.lm0,mod.lm1)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: p_trans ~ 1
+## Model 2: p_trans ~ generation
+##   Res.Df    RSS Df Sum of Sq      F Pr(>F)
+## 1    510 59.528                           
+## 2    509 59.514  1  0.014598 0.1249  0.724
+\end{verbatim}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(mod.lm1,mod.lm2)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: p_trans ~ generation
+## Model 2: p_trans ~ s_demo + generation
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+## 1    509 59.514                                  
+## 2    508 54.290  1    5.2233 48.875 8.623e-12 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{anova}\hlstd{(mod.lm0,mod.lm2)}
+\end{alltt}
+\begin{verbatim}
+## Analysis of Variance Table
+## 
+## Model 1: p_trans ~ 1
+## Model 2: p_trans ~ s_demo + generation
+##   Res.Df    RSS Df Sum of Sq      F    Pr(>F)    
+## 1    510 59.528                                  
+## 2    508 54.290  2    5.2379 24.506 6.917e-11 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+\begin{alltt}
+\hlstd{anova.1_2}\hlkwb{<-}\hlkwd{anova}\hlstd{(mod.lm1,mod.lm2)}
+
+
+\hlkwd{hist}\hlstd{(data_no_g11}\hlopt{$}\hlstd{p_trans,}\hlkwc{main} \hlstd{=} \hlstr{"Histogram of Probability of Successful Transmission"}\hlstd{,}\hlkwc{xlab} \hlstd{=} \hlstr{'Probability of Successful Transmission'}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=.6\linewidth]{figure/PSYCH205-Final-Project-Rnwauto-report-1} 
+
+}
+
+
+\begin{kframe}\begin{alltt}
+\hlkwd{scatterplot}\hlstd{(p_trans} \hlopt{~} \hlstd{generation,} \hlkwc{data}\hlstd{=data_no_g11,}\hlkwc{xlab}\hlstd{=}\hlstr{'generation'}\hlstd{,}\hlkwc{ylab} \hlstd{=} \hlstr{'Probability of Successful Transmission'}\hlstd{)}
+\hlkwd{title}\hlstd{(}\hlkwc{main} \hlstd{=} \hlstr{"transmission probability vs generation "}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=.6\linewidth]{figure/PSYCH205-Final-Project-Rnwauto-report-2} 
+
+}
+
+
+\begin{kframe}\begin{alltt}
+\hlkwd{scatterplot}\hlstd{(p_trans} \hlopt{~} \hlstd{s_demo,} \hlkwc{data}\hlstd{=data_no_g11,}\hlkwc{xlab}\hlstd{=}\hlstr{'demonstration quality'}\hlstd{,}\hlkwc{ylab} \hlstd{=} \hlstr{'Probability of Successful Transmission'}\hlstd{)}
+\hlkwd{title}\hlstd{(}\hlkwc{main} \hlstd{=} \hlstr{"transmission probability vs demonstration score "}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=.6\linewidth]{figure/PSYCH205-Final-Project-Rnwauto-report-3} 
+
+}
+
+
+\begin{kframe}\begin{alltt}
+\hlstd{(R2.1_2} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlstd{anova.1_2}\hlopt{$}\hlstd{RSS[}\hlnum{2}\hlstd{]}\hlopt{/}\hlstd{anova.1_2}\hlopt{$}\hlstd{RSS[}\hlnum{1}\hlstd{])}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.08776623
+\end{verbatim}
+\begin{alltt}
+\hlstd{(R2.adj.1_2} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlstd{(anova.1_2}\hlopt{$}\hlstd{RSS[}\hlnum{2}\hlstd{]}\hlopt{/}\hlstd{mod.lm2}\hlopt{$}\hlstd{df.residual)}\hlopt{/}\hlstd{(anova.1_2}\hlopt{$}\hlstd{RSS[}\hlnum{1}\hlstd{]}\hlopt{/}\hlstd{mod.lm1}\hlopt{$}\hlstd{df.residual))}
+\end{alltt}
+\begin{verbatim}
+## [1] 0.08597049
+\end{verbatim}
+\begin{alltt}
+\hlstd{n.folds} \hlkwb{<-} \hlnum{10}
+\hlstd{folds} \hlkwb{<-} \hlkwd{cut}\hlstd{(}\hlkwd{seq}\hlstd{(}\hlnum{1}\hlstd{,n),}\hlkwc{breaks}\hlstd{=n.folds,}\hlkwc{labels}\hlstd{=}\hlnum{FALSE}\hlstd{)}
+\hlstd{folds} \hlkwb{<-} \hlkwd{sample}\hlstd{(folds,} \hlkwc{replace} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+
+\hlstd{MSE.0} \hlkwb{<-} \hlkwd{array}\hlstd{(}\hlkwc{data}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{dim} \hlstd{= n.folds)}
+\hlstd{MSE.1} \hlkwb{<-} \hlkwd{array}\hlstd{(}\hlkwc{data}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{dim} \hlstd{= n.folds)}
+\hlstd{MSE.2} \hlkwb{<-} \hlkwd{array}\hlstd{(}\hlkwc{data}\hlstd{=}\hlnum{0}\hlstd{,} \hlkwc{dim} \hlstd{= n.folds)}
+
+
+\hlcom{#Cross Validation}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlstd{n.folds)\{}
+  \hlstd{testIndexes} \hlkwb{<-} \hlkwd{which}\hlstd{(folds}\hlopt{==}\hlstd{i,}\hlkwc{arr.ind}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+  \hlstd{testData} \hlkwb{<-} \hlstd{data_no_g11[testIndexes, ]}
+  \hlstd{trainData} \hlkwb{<-} \hlstd{data_no_g11[}\hlopt{-}\hlstd{testIndexes, ]}
+
+  \hlstd{model.0.cv} \hlkwb{<-} \hlkwd{lm}\hlstd{(p_trans} \hlopt{~} \hlnum{1}\hlstd{,} \hlkwc{data} \hlstd{= trainData)}
+  \hlstd{model.1.cv} \hlkwb{<-} \hlkwd{lm}\hlstd{(p_trans} \hlopt{~} \hlstd{generation,} \hlkwc{data} \hlstd{= trainData)}
+  \hlstd{model.2.cv} \hlkwb{<-} \hlkwd{lm}\hlstd{(p_trans} \hlopt{~} \hlstd{s_demo}\hlopt{+}\hlstd{generation,} \hlkwc{data} \hlstd{= trainData)}
+
+  \hlstd{pred.0} \hlkwb{<-} \hlkwd{predict}\hlstd{(model.0.cv,} \hlkwc{newdata} \hlstd{= testData)}
+  \hlstd{pred.1} \hlkwb{<-} \hlkwd{predict}\hlstd{(model.1.cv,} \hlkwc{newdata} \hlstd{= testData)}
+  \hlstd{pred.2} \hlkwb{<-} \hlkwd{predict}\hlstd{(model.2.cv,} \hlkwc{newdata} \hlstd{= testData)}
+
+  \hlstd{MSE.0[i]} \hlkwb{<-} \hlkwd{sum}\hlstd{((testData}\hlopt{$}\hlstd{p_trans} \hlopt{-} \hlstd{pred.0)}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{/}\hlkwd{nrow}\hlstd{(testData)}
+  \hlstd{MSE.1[i]} \hlkwb{<-} \hlkwd{mean}\hlstd{((testData}\hlopt{$}\hlstd{p_trans} \hlopt{-} \hlstd{pred.1)}\hlopt{^}\hlnum{2}\hlstd{)}
+  \hlstd{MSE.2[i]} \hlkwb{<-} \hlkwd{mean}\hlstd{((testData}\hlopt{$}\hlstd{p_trans} \hlopt{-} \hlstd{pred.2)}\hlopt{^}\hlnum{2}\hlstd{)}
+
+\hlstd{\}}
+
+\hlcom{# Now we can calculate all of the cross-validated R2 - notice that these are arrays that have the size of you cv folds.  You get one value of R2 per fold.  This will be useful to get a confidence interval on your R2CV}
+
+\hlstd{R2.cv.0_1} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlstd{MSE.1}\hlopt{/}\hlstd{MSE.0}
+\hlstd{R2.cv.1_2} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlstd{MSE.2}\hlopt{/}\hlstd{MSE.1}
+\hlstd{R2.cv.0_2} \hlkwb{<-} \hlnum{1} \hlopt{-} \hlstd{MSE.2}\hlopt{/}\hlstd{MSE.0}
+
+\hlcom{# Get means and SEs}
+\hlstd{R2.cv.m.0_1} \hlkwb{<-} \hlkwd{mean}\hlstd{(R2.cv.0_1)}
+\hlstd{R2.cv.m.1_2} \hlkwb{<-} \hlkwd{mean}\hlstd{(R2.cv.1_2)}
+\hlstd{R2.cv.m.0_2} \hlkwb{<-} \hlkwd{mean}\hlstd{(R2.cv.0_2)}
+
+\hlstd{R2.cv.se.0_1} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{((R2.cv.0_1} \hlopt{-} \hlstd{R2.cv.m.0_1)}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{/}\hlstd{(n.folds}\hlopt{-}\hlnum{1}\hlstd{))}\hlopt{*}\hlkwd{sqrt}\hlstd{(}\hlnum{1}\hlopt{/}\hlstd{n.folds} \hlopt{+} \hlnum{1}\hlopt{/}\hlstd{(n.folds}\hlopt{-}\hlnum{1}\hlstd{))}
+\hlstd{R2.cv.se.1_2} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{((R2.cv.1_2} \hlopt{-} \hlstd{R2.cv.m.1_2)}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{/}\hlstd{(n.folds}\hlopt{-}\hlnum{1}\hlstd{))}\hlopt{*}\hlkwd{sqrt}\hlstd{(}\hlnum{1}\hlopt{/}\hlstd{n.folds} \hlopt{+} \hlnum{1}\hlopt{/}\hlstd{(n.folds}\hlopt{-}\hlnum{1}\hlstd{))}
+\hlstd{R2.cv.se.0_2} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{sum}\hlstd{((R2.cv.0_2} \hlopt{-} \hlstd{R2.cv.m.0_2)}\hlopt{^}\hlnum{2}\hlstd{)}\hlopt{/}\hlstd{(n.folds}\hlopt{-}\hlnum{1}\hlstd{))}\hlopt{*}\hlkwd{sqrt}\hlstd{(}\hlnum{1}\hlopt{/}\hlstd{n.folds} \hlopt{+} \hlnum{1}\hlopt{/}\hlstd{(n.folds}\hlopt{-}\hlnum{1}\hlstd{))}
+
+\hlkwd{hist}\hlstd{(R2.cv.0_1,} \hlkwc{xlab}\hlstd{=}\hlstr{"R2"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Folds"}\hlstd{,}
+     \hlkwc{main}\hlstd{=}\hlkwd{paste}\hlstd{(}\hlstr{"R2 scores across folds (mean = "}\hlstd{,}
+                \hlkwd{round}\hlstd{(R2.cv.m.0_1,} \hlnum{3}\hlstd{),} \hlstr{", se = "}\hlstd{,} \hlkwd{round}\hlstd{(R2.cv.se.0_1,} \hlnum{3}\hlstd{),} \hlstr{")"}\hlstd{))}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=R2.cv.m.0_1,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=R2.cv.m.0_1} \hlopt{-} \hlnum{1.96}\hlopt{*}\hlstd{R2.cv.se.0_1,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=R2.cv.m.0_1} \hlopt{+} \hlnum{1.96}\hlopt{*}\hlstd{R2.cv.se.0_1,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=.6\linewidth]{figure/PSYCH205-Final-Project-Rnwauto-report-4} 
+
+}
+
+
+\begin{kframe}\begin{alltt}
+\hlkwd{hist}\hlstd{(R2.cv.1_2,} \hlkwc{xlab}\hlstd{=}\hlstr{"R2"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Folds"}\hlstd{,}
+     \hlkwc{main}\hlstd{=}\hlkwd{paste}\hlstd{(}\hlstr{"R2 scores across folds (mean = "}\hlstd{,}
+                \hlkwd{round}\hlstd{(R2.cv.m.1_2,} \hlnum{3}\hlstd{),} \hlstr{", se = "}\hlstd{,} \hlkwd{round}\hlstd{(R2.cv.se.1_2,} \hlnum{3}\hlstd{),} \hlstr{")"}\hlstd{))}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=R2.cv.m.1_2,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=R2.cv.m.1_2} \hlopt{-} \hlnum{1.96}\hlopt{*}\hlstd{R2.cv.se.1_2,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=R2.cv.m.1_2} \hlopt{+} \hlnum{1.96}\hlopt{*}\hlstd{R2.cv.se.1_2,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=.6\linewidth]{figure/PSYCH205-Final-Project-Rnwauto-report-5} 
+
+}
+
+
+\begin{kframe}\begin{alltt}
+\hlkwd{hist}\hlstd{(R2.cv.0_2,} \hlkwc{xlab}\hlstd{=}\hlstr{"R2"}\hlstd{,} \hlkwc{ylab}\hlstd{=}\hlstr{"Folds"}\hlstd{,}
+     \hlkwc{main}\hlstd{=}\hlkwd{paste}\hlstd{(}\hlstr{"R2 scores across folds (mean = "}\hlstd{,}
+                \hlkwd{round}\hlstd{(R2.cv.m.0_2,} \hlnum{3}\hlstd{),} \hlstr{", se = "}\hlstd{,} \hlkwd{round}\hlstd{(R2.cv.se.0_2,} \hlnum{3}\hlstd{),} \hlstr{")"}\hlstd{))}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=R2.cv.m.0_2,} \hlkwc{col}\hlstd{=}\hlstr{"red"}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=R2.cv.m.0_2} \hlopt{-} \hlnum{1.96}\hlopt{*}\hlstd{R2.cv.se.0_2,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\hlkwd{abline}\hlstd{(}\hlkwc{v}\hlstd{=R2.cv.m.0_2} \hlopt{+} \hlnum{1.96}\hlopt{*}\hlstd{R2.cv.se.0_2,} \hlkwc{col}\hlstd{=}\hlstr{"blue"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=.6\linewidth]{figure/PSYCH205-Final-Project-Rnwauto-report-6} 
+
+}
+
+
+\begin{kframe}\begin{alltt}
+\hlcom{# Print some results}
+\hlkwd{print}\hlstd{(}\hlkwd{sprintf}\hlstd{(}\hlstr{'Model 1 R2=%.2f R2adj=%.2f R2cv=%.2f +- %.3f'}\hlstd{,} \hlkwd{summary}\hlstd{(mod.lm1)}\hlopt{$}\hlstd{r.squared,} \hlkwd{summary}\hlstd{(mod.lm1)}\hlopt{$}\hlstd{adj.r.squared, R2.cv.m.0_1,} \hlnum{1.96}\hlopt{*}\hlstd{R2.cv.se.0_1))}
+\end{alltt}
+\begin{verbatim}
+## [1] "Model 1 R2=0.00 R2adj=-0.00 R2cv=-0.00 +- 0.002"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{print}\hlstd{(}\hlkwd{sprintf}\hlstd{(}\hlstr{'Model 2 R2=%.2f R2adj=%.2f R2cv=%.2f +- %.3f'}\hlstd{,} \hlkwd{summary}\hlstd{(mod.lm2)}\hlopt{$}\hlstd{r.squared,} \hlkwd{summary}\hlstd{(mod.lm2)}\hlopt{$}\hlstd{adj.r.squared, R2.cv.m.0_2,} \hlnum{1.96}\hlopt{*}\hlstd{R2.cv.se.0_2))}
+\end{alltt}
+\begin{verbatim}
+## [1] "Model 2 R2=0.09 R2adj=0.08 R2cv=0.09 +- 0.059"
+\end{verbatim}
+\begin{alltt}
+\hlkwd{print}\hlstd{(}\hlkwd{sprintf}\hlstd{(}\hlstr{'Model 1vs2 R2=%.2f R2adj=%.2f R2cv=%.2f +- %.3f'}\hlstd{, R2.1_2, R2.adj.1_2, R2.cv.m.1_2,} \hlnum{1.96}\hlopt{*}\hlstd{R2.cv.se.1_2))}
+\end{alltt}
+\begin{verbatim}
+## [1] "Model 1vs2 R2=0.09 R2adj=0.09 R2cv=0.09 +- 0.059"
+\end{verbatim}
+\begin{alltt}
+\hlstd{mod.lme}\hlkwb{<-}\hlkwd{lme}\hlstd{(p_trans} \hlopt{~} \hlstd{s_demo}\hlopt{+}\hlstd{generation,} \hlkwc{random} \hlstd{=} \hlopt{~} \hlnum{1} \hlopt{|}\hlstd{participant_id ,} \hlkwc{data}\hlstd{=data_no_g11,}\hlkwc{method} \hlstd{=} \hlstr{'ML'}\hlstd{)}
+\hlkwd{summary}\hlstd{(mod.lme)}
+\end{alltt}
+\begin{verbatim}
+## Linear mixed-effects model fit by maximum likelihood
+##   Data: data_no_g11 
+##        AIC      BIC    logLik
+##   314.4823 335.6641 -152.2411
+## 
+## Random effects:
+##  Formula: ~1 | participant_id
+##         (Intercept)  Residual
+## StdDev:   0.3051967 0.1144488
+## 
+## Fixed effects:  p_trans ~ s_demo + generation 
+##                  Value  Std.Error  DF   t-value p-value
+## (Intercept)  0.4306833 0.04062627 508 10.601103  0.0000
+## s_demo       0.2355712 0.03369611 508  6.991051  0.0000
+## generation  -0.0035821 0.00540638 508 -0.662560  0.5079
+##  Correlation: 
+##            (Intr) s_demo
+## s_demo     -0.451       
+## generation -0.799 -0.042
+## 
+## Standardized Within-Group Residuals:
+##        Min         Q1        Med         Q3        Max 
+## -0.7099922 -0.2058287  0.0351722  0.2493769  0.6441548 
+## 
+## Number of Observations: 511
+## Number of Groups: 511
+\end{verbatim}
+\begin{alltt}
+\hlkwd{compareCoefs}\hlstd{(mod.lm2, mod.lme)}
+\end{alltt}
+
+
+{\ttfamily\noindent\color{warningcolor}{\#\# Warning in compareCoefs(mod.lm2, mod.lme): models to be compared are of different classes}}\begin{verbatim}
+## Calls:
+## 1: lm(formula = p_trans ~ s_demo + generation, data = data_no_g11)
+## 2: lme.formula(fixed = p_trans ~ s_demo + generation, data = data_no_g11, random = ~1 
+##   | participant_id, method = "ML")
+## 
+##              Model 1  Model 2
+## (Intercept)   0.4307   0.4307
+## SE            0.0406   0.0405
+##                              
+## s_demo        0.2356   0.2356
+## SE            0.0337   0.0336
+##                              
+## generation  -0.00358 -0.00358
+## SE           0.00541  0.00539
+## 
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+The R session information (including the OS info, R version and all
+packages used):
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{sessionInfo}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## R version 4.3.1 (2023-06-16 ucrt)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 11 x64 (build 22631)
+## 
+## Matrix products: default
+## 
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.utf8  LC_CTYPE=English_United States.utf8   
+## [3] LC_MONETARY=English_United States.utf8 LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.utf8    
+## 
+## time zone: America/Los_Angeles
+## tzcode source: internal
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] car_3.1-2      carData_3.0-5  lattice_0.21-8 nlme_3.1-163  
+## 
+## loaded via a namespace (and not attached):
+##  [1] digest_0.6.33     fastmap_1.1.1     xfun_0.40         abind_1.4-5      
+##  [5] knitr_1.44        htmltools_0.5.6   rmarkdown_2.24    tinytex_0.46     
+##  [9] cli_3.6.1         grid_4.3.1        compiler_4.3.1    highr_0.10       
+## [13] rstudioapi_0.15.0 tools_4.3.1       evaluate_0.21     yaml_2.3.7       
+## [17] rlang_1.1.1
+\end{verbatim}
+\begin{alltt}
+\hlkwd{Sys.time}\hlstd{()}
+\end{alltt}
+\begin{verbatim}
+## [1] "2024-05-05 19:39:19 PDT"
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+
+\end{document}
